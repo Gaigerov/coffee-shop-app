@@ -4,7 +4,7 @@ import {removeItem, updateQuantity, clearCart} from '../features/cart/cartSlice'
 import Button from '../components/ui/Button';
 import styles from './ Cart.module.scss';
 import {useNavigate} from 'react-router-dom';
-import Typography from '@mui/material/Typography'; // Добавлен импорт
+import Typography from '@mui/material/Typography';
 
 const Cart: React.FC = () => {
     const dispatch = useAppDispatch();

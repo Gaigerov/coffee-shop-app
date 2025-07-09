@@ -35,7 +35,6 @@ const Checkout: React.FC = () => {
         try {
             if (!user) throw new Error('Пользователь не авторизован');
 
-            // Сохраняем заказ в Supabase
             const orderData = {
                 user_id: user.id,
                 total,
@@ -63,10 +62,8 @@ const Checkout: React.FC = () => {
 
             if (profileError) throw profileError;
 
-            // Очищаем корзину
             dispatch(clearCart());
 
-            // Переходим на страницу успешного оформления
             navigate('/checkout/success');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Ошибка оформления заказа');

@@ -28,7 +28,6 @@ const Account: React.FC = () => {
 
             setLoading(true);
             try {
-                // Загрузка бонусных баллов
                 const {data: profileData, error: profileError} = await supabase
                     .from('profiles')
                     .select('bonus_points')
@@ -41,7 +40,6 @@ const Account: React.FC = () => {
                     setBonusPoints(profileData.bonus_points || 0);
                 }
 
-                // Загрузка истории заказов
                 const {data: ordersData, error: ordersError} = await supabase
                     .from('orders')
                     .select('*')

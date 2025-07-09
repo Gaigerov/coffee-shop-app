@@ -8,8 +8,8 @@ interface ButtonProps {
     onClick?: () => void;
     type?: 'button' | 'submit' | 'reset';
     disabled?: boolean;
-    className?: string; // Добавляем className
-    size?: 'small' | 'medium' | 'large'; // Добавляем size
+    className?: string;
+    size?: 'small' | 'medium' | 'large';
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,16 +19,16 @@ const Button: React.FC<ButtonProps> = ({
     onClick,
     type = 'button',
     disabled = false,
-    className = '', // Значение по умолчанию
-    size = 'medium', // Значение по умолчанию
+    className = '', 
+    size = 'medium', 
 }) => {
     const buttonClasses = [
         styles.button,
         styles[`button--${variant}`],
-        styles[`button--${size}`], // Добавляем класс для размера
+        styles[`button--${size}`], 
         fullWidth ? styles['button--fullWidth'] : '',
         disabled ? styles['button--disabled'] : '',
-        className, // Добавляем переданный className
+        className, 
     ].filter(Boolean).join(' ');
 
     return (

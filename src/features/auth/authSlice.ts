@@ -1,6 +1,6 @@
 import {createSlice, type PayloadAction} from '@reduxjs/toolkit';
-import type {User} from '@supabase/supabase-js'; // Используем import type
-import {supabase} from '../../utils/supabaseClient'; // Исправленный импорт
+import type {User} from '@supabase/supabase-js';
+import {supabase} from '../../utils/supabaseClient';
 import type {AppDispatch} from '../../store';
 
 interface AuthState {
