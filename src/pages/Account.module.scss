@@ -1,0 +1,91 @@
+.account {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.account__title {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.account__info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.account__card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.account__subtitle {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.account__bonus {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.account__bonusPoints {
+    font-size: 32px;
+    font-weight: 700;
+    color: #4caf50;
+}
+
+.account__bonusInfo {
+    color: #666;
+    font-size: 14px;
+}
+
+.account__orders {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 32px;
+}
+
+.account__orderList {
+    display: grid;
+    gap: 16px;
+}
+
+.account__order {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.account__orderHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.account__orderDetails {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+}
+
+.account__actions {
+    display: flex;
+    justify-content: center;
+}
+
+.account__logout {
+    max-width: 200px;
+}
