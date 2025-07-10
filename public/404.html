@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        sessionStorage.redirect = location.pathname;
+        location.replace('/#' + location.pathname);
+    </script>
+</head>
+
+<body>
+    <h1>Redirecting to main page...</h1>
+</body>
+
+</html>

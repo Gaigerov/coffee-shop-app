@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {HashRouter, Routes, Route} from 'react-router-dom';
 import Header from './components/Header/Header';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
@@ -11,7 +11,7 @@ import styles from './App.module.scss';
 
 function App() {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <div className={styles.app}>
                 <Header />
                 <main className={styles.main}>
@@ -25,7 +25,7 @@ function App() {
                     </Routes>
                 </main>
             </div>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 
