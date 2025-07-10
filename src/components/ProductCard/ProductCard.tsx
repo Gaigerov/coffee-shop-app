@@ -1,6 +1,7 @@
 import {Card, CardMedia, CardContent, Typography, Button} from '@mui/material';
 import type {Product} from '../../types/types';
 
+
 interface ProductCardProps {
     product: Product;
     onAddToCart: (product: Product) => void;
@@ -28,11 +29,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({product, onAddToCart}) 
                 <Typography variant="body2" color="text.secondary" sx={{mb: 2}}>
                     {product.description || 'Описание отсутствует'}
                 </Typography>
-                <Typography variant="h6" color="primary" sx={{mt: 'auto'}}>
+                <Typography variant="h6" color="pomegranate" sx={{mt: 'auto'}}>
                     {product.price.toFixed(2)} ₽
                 </Typography>
             </CardContent>
             <Button
+                color="pomegranate"
                 variant="contained"
                 fullWidth
                 onClick={handleAdd}

@@ -192,7 +192,7 @@ const Checkout: React.FC = () => {
 
                     <Button
                         type="submit"
-                        variant="primary"
+                        variant="secondary"
                         fullWidth
                         disabled={isProcessing}
                         className={styles.checkout__submit}

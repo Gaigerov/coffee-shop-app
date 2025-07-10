@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'lavash';
+    src: url('/src/assets/fonts/lavash.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body,
+button,
+input,
+textarea {
+    font-family: 'lavash', Arial, sans-serif !important;
+}
+
+.MuiTypography-root,
+.MuiButton-root,
+.MuiInputBase-root {
+    font-family: 'lavash', Arial, sans-serif !important;
+}

@@ -12,20 +12,20 @@
     justify-content: center;
 
     &--primary {
-        background-color: #6d4c41;
+        background-color: #922B21;
         color: white;
 
         &:hover:not(:disabled) {
-            background-color: #5d4037;
+            background-color: #C0392B;
         }
     }
 
     &--secondary {
-        background-color: #d7ccc8;
-        color: #4e342e;
+        background-color: #f4c3b1;
+        color: #878787;
 
         &:hover:not(:disabled) {
-            background-color: #bcaaa4;
+            background-color: #fed0ca;
         }
     }
 

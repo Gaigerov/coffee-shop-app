@@ -2,7 +2,7 @@ import React from 'react';
 import {useAppSelector, useAppDispatch} from '../store';
 import {removeItem, updateQuantity, clearCart} from '../features/cart/cartSlice';
 import Button from '../components/ui/Button';
-import styles from './ Cart.module.scss';
+import styles from './Cart.module.scss';
 import {useNavigate} from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 
@@ -20,6 +20,7 @@ const Cart: React.FC = () => {
         }
         navigate('/checkout');
     };
+
     const handleRemoveItem = (id: string) => {
         dispatch(removeItem(id));
     };

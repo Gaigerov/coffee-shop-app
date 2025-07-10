@@ -63,7 +63,7 @@
 }
 
 .checkout__totalAmount {
-    color: #4caf50;
+    color: #cb0909;
 }
 
 .checkout__form {
@@ -87,7 +87,7 @@
     transition: all 0.2s;
 
     &:hover {
-        border-color: #4caf50;
+        border-color: #cb0909;
     }
 
     input {
@@ -117,7 +117,7 @@
         font-size: 16px;
 
         &:focus {
-            border-color: #4caf50;
+            border-color: #cb0909;
             outline: none;
         }
     }
