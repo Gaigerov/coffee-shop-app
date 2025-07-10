@@ -8,8 +8,6 @@ const Menu = () => {
     const dispatch = useAppDispatch();
 
     const handleAddToCart = (product: Product) => {
-        console.log("Adding to cart:", product);
-
         dispatch(addItem({
             id: product.id,
             name: product.name,

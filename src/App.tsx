@@ -7,6 +7,7 @@ import Checkout from './pages/Checkout';
 import Account from './pages/Account';
 import AuthPage from './pages/AuthPage';
 import styles from './App.module.scss';
+import CheckoutSuccess from './pages/CheckoutSuccess';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/account" element={<Account />} />
                         <Route path="/login" element={<AuthPage />} />
+                        <Route path="/checkout/success" element={<CheckoutSuccess />} />
                     </Routes>
                 </main>
             </div>

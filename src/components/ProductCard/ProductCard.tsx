@@ -9,7 +9,6 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({product, onAddToCart}) => {
     const handleAdd = () => {
-        console.log("Adding product:", product);
         onAddToCart(product);
     };
 

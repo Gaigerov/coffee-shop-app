@@ -4,8 +4,10 @@ import {clearCart} from '../features/cart/cartSlice';
 import Button from '../components/ui/Button';
 import styles from './Checkout.module.scss';
 import {useNavigate} from 'react-router-dom';
-import {supabase} from '../utils/supabaseClient';
 import Typography from '@mui/material/Typography';
+import {StripeService} from '../services/stripeService';
+import {OrderService} from '../services/orderService';
+import {supabase} from '../utils/supabaseClient';
 
 const Checkout: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -13,18 +15,54 @@ const Checkout: React.FC = () => {
     const {items} = useAppSelector((state) => state.cart);
     const {user} = useAppSelector((state) => state.auth);
     const [paymentMethod, setPaymentMethod] = useState('card');
-    const [cardNumber, setCardNumber] = useState('');
-    const [cardExpiry, setCardExpiry] = useState('');
-    const [cardCvc, setCardCvc] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [bonusPointsUsed, setBonusPointsUsed] = useState(0);
+    const [userBonusPoints, setUserBonusPoints] = useState(0);
 
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const finalTotal = Math.max(0, total - bonusPointsUsed);
 
     useEffect(() => {
         if (!user) {
             navigate('/login');
+            return;
         }
+
+        // Получение бонусных баллов пользователя
+        const fetchUserBonusPoints = async () => {
+            try {
+                // Сначала пытаемся получить профиль
+                const {data: profile, error} = await supabase
+                    .from('profiles')
+                    .select('bonus_points')
+                    .eq('id', user.id)
+                    .maybeSingle(); // Используем maybeSingle для обработки отсутствия данных
+
+                if (error) throw error;
+
+                // Если профиля нет - создаем его
+                if (!profile) {
+                    const {error: createError} = await supabase
+                        .from('profiles')
+                        .insert([{
+                            id: user.id,
+                            email: user.email,
+                            bonus_points: 0
+                        }]);
+
+                    if (createError) throw createError;
+                    setUserBonusPoints(0);
+                } else {
+                    setUserBonusPoints(profile.bonus_points || 0);
+                }
+            } catch (err) {
+                console.error('Ошибка получения бонусных баллов:', err);
+                setUserBonusPoints(0);
+            }
+        };
+
+        fetchUserBonusPoints();
     }, [user, navigate]);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -35,41 +73,79 @@ const Checkout: React.FC = () => {
         try {
             if (!user) throw new Error('Пользователь не авторизован');
 
-            const orderData = {
-                user_id: user.id,
-                total,
-                items: items.map(item => ({
-                    product_id: item.id,
-                    name: item.name,
-                    price: item.price,
-                    quantity: item.quantity,
-                })),
-            };
+            // Подготовка данных для заказа
+            const orderItems = items.map(item => ({
+                product_id: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+            }));
 
-            const {error: orderError} = await supabase
-                .from('orders')
-                .insert([orderData]);
+            // Оплата через Stripe
+            if (paymentMethod === 'card') {
+                // Создаем заказ в базе со статусом "pending"
+                const order = await OrderService.createOrder(
+                    user.id,
+                    orderItems,
+                    finalTotal,
+                    bonusPointsUsed, // Параметр bonus_points_used
+                );
 
-            if (orderError) throw orderError;
+                // Сохраняем ID заказа
+                localStorage.setItem('last_order_id', order.id);
 
-            // Обновляем бонусные баллы (10 зернышек за 100 рублей)
-            const bonusPoints = Math.floor(total / 100) * 10;
+                const successUrl = `${window.location.origin}/#/checkout/success`;
+                const cancelUrl = `${window.location.origin}/#/checkout`;
 
-            const {error: profileError} = await supabase
-                .from('profiles')
-                .update({bonus_points: bonusPoints})
-                .eq('id', user.id);
+                // Перенаправление на страницу оплаты Stripe
+                await StripeService.createCheckoutSession(
+                    items.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        price: Math.round(item.price * 100),
+                        quantity: item.quantity,
+                    })),
+                    successUrl,
+                    cancelUrl
+                );
+            }
+            // Оплата наличными
+            else if (paymentMethod === 'cash') {
+                // Создаем заказ в базе со статусом "completed"
+                const order = await OrderService.createOrder(
+                    user.id,
+                    orderItems,
+                    finalTotal,
+                    bonusPointsUsed,
+                    'completed'
+                );
 
-            if (profileError) throw profileError;
+                // Обновляем бонусные баллы
+                const bonusPointsEarned = Math.floor(finalTotal / 100) * 10;
+                const newBonusPoints = userBonusPoints - bonusPointsUsed + bonusPointsEarned;
 
-            dispatch(clearCart());
+                await supabase
+                    .from('profiles')
+                    .update({bonus_points: newBonusPoints})
+                    .eq('id', user.id);
 
-            navigate('/checkout/success');
+                // Сохраняем ID заказа
+                localStorage.setItem('last_order_id', order.id);
+
+                // Очищаем корзину и переходим на страницу успеха
+                dispatch(clearCart());
+                navigate('/checkout/success');
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Ошибка оформления заказа');
         } finally {
             setIsProcessing(false);
         }
+    };
+
+    const handleBonusPointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const points = Math.min(userBonusPoints, Math.max(0, parseInt(e.target.value) || 0));
+        setBonusPointsUsed(Math.min(points, total));
     };
 
     if (items.length === 0) {
@@ -114,9 +190,35 @@ const Checkout: React.FC = () => {
                         ))}
                     </ul>
 
+                    {userBonusPoints > 0 && (
+                        <div className={styles.checkout__bonusSection}>
+                            <Typography variant="h6" className={styles.checkout__subtitle}>
+                                Бонусные баллы
+                            </Typography>
+                            <div className={styles.checkout__bonusControl}>
+                                <label>
+                                    Использовать баллы (доступно: {userBonusPoints})
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max={Math.min(userBonusPoints, total)}
+                                        value={bonusPointsUsed}
+                                        onChange={handleBonusPointsChange}
+                                        className={styles.checkout__bonusInput}
+                                    />
+                                </label>
+                                <span className={styles.checkout__bonusDiscount}>
+                                    Скидка: -{bonusPointsUsed.toFixed(2)} ₽
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
                     <div className={styles.checkout__total}>
                         <span>Итого:</span>
-                        <span className={styles.checkout__totalAmount}>{total.toFixed(2)} ₽</span>
+                        <span className={styles.checkout__totalAmount}>
+                            {finalTotal.toFixed(2)} ₽
+                        </span>
                     </div>
                 </div>
 
@@ -134,7 +236,7 @@ const Checkout: React.FC = () => {
                                 checked={paymentMethod === 'card'}
                                 onChange={() => setPaymentMethod('card')}
                             />
-                            <span>Банковская карта</span>
+                            <span>Банковская карта (Stripe)</span>
                         </label>
 
                         <label className={styles.checkout__paymentMethod}>
@@ -149,45 +251,6 @@ const Checkout: React.FC = () => {
                         </label>
                     </div>
 
-                    {paymentMethod === 'card' && (
-                        <div className={styles.checkout__cardForm}>
-                            <div className={styles.checkout__formGroup}>
-                                <label>Номер карты</label>
-                                <input
-                                    type="text"
-                                    value={cardNumber}
-                                    onChange={(e) => setCardNumber(e.target.value)}
-                                    placeholder="1234 5678 9012 3456"
-                                    required
-                                />
-                            </div>
-
-                            <div className={styles.checkout__formRow}>
-                                <div className={styles.checkout__formGroup}>
-                                    <label>Срок действия</label>
-                                    <input
-                                        type="text"
-                                        value={cardExpiry}
-                                        onChange={(e) => setCardExpiry(e.target.value)}
-                                        placeholder="ММ/ГГ"
-                                        required
-                                    />
-                                </div>
-
-                                <div className={styles.checkout__formGroup}>
-                                    <label>CVV</label>
-                                    <input
-                                        type="text"
-                                        value={cardCvc}
-                                        onChange={(e) => setCardCvc(e.target.value)}
-                                        placeholder="123"
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
                     {error && <div className={styles.checkout__error}>{error}</div>}
 
                     <Button
@@ -197,7 +260,7 @@ const Checkout: React.FC = () => {
                         disabled={isProcessing}
                         className={styles.checkout__submit}
                     >
-                        {isProcessing ? 'Оформление...' : 'Оплатить'}
+                        {isProcessing ? 'Оформление...' : 'Оформить заказ'}
                     </Button>
                 </form>
             </div>

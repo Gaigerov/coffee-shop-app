@@ -9,8 +9,6 @@ import type {Product} from '../../types/types';
 export const ProductsList = ({onAddToCart}: {onAddToCart: (product: Product) => void}) => {
     const {products, loading, error} = useFetchProducts();
 
-    console.log("ProductsList state:", {loading, error, products});
-
     if (error) {
         return (
             <Container sx={{py: 4, textAlign: 'center'}}>
@@ -46,7 +44,6 @@ export const ProductsList = ({onAddToCart}: {onAddToCart: (product: Product) => 
                             key={product.id}
                             product={product}
                             onAddToCart={(p) => {
-                                console.log("Passing product to cart:", p);
                                 onAddToCart(p);
                             }}
                         />

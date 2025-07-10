@@ -1,9 +1,16 @@
+export interface Profile {
+  id: string;
+  full_name: string;
+  address: string;
+  bonus_points: number;
+}
+
 export interface Product {
-    id: string;
-    name: string;
-    price: number;
-    description: string;
-    image_url: string;
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  image_url: string;
 }
 
 export interface CartItem {

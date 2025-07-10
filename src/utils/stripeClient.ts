@@ -1,6 +1,10 @@
-import {createClient} from '@supabase/supabase-js'
+import {loadStripe, type Stripe} from '@stripe/stripe-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
+let stripePromise: Promise<Stripe | null>;
 
-export const supabase = createClient(supabaseUrl, supabaseKey)  
+export const getStripe = (): Promise<Stripe | null> => {
+    if (!stripePromise) {
+        stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+    }
+    return stripePromise;
+};

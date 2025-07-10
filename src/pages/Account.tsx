@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useAppSelector, useAppDispatch} from '../store';
-import {logout} from '../features/auth/authSlice';
+import {signOutUser} from '../features/auth/authSlice';
 import {supabase} from '../utils/supabaseClient';
 import Button from '../components/ui/Button';
 import styles from './Account.module.scss';
@@ -18,7 +18,7 @@ const Account: React.FC = () => {
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
-        dispatch(logout());
+        dispatch(signOutUser());
         navigate('/');
     };
 

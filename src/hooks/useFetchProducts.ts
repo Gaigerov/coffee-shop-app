@@ -11,8 +11,6 @@ export function useFetchProducts() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                console.log("Fetching products...");
-
                 const {data, error} = await supabase
                     .from('products')
                     .select('*')
@@ -21,11 +19,8 @@ export function useFetchProducts() {
                 if (error) {
                     throw new Error(error.message);
                 }
-
-                console.log("Products data:", data);
                 setProducts(data || []);
             } catch (err) {
-                console.error("Error fetching products:", err);
                 setError(err instanceof Error ? err.message : 'Unknown error');
             } finally {
                 setLoading(false);
