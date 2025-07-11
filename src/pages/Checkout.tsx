@@ -201,7 +201,7 @@ const Checkout: React.FC = () => {
                     {userBonusPoints > 0 && (
                         <div className={styles.checkout__bonusSection}>
                             <Typography variant="h6" className={styles.checkout__subtitle}>
-                                Бонусные баллы
+                                Бонусные баллы "зернышки"
                             </Typography>
                             <div className={styles.checkout__bonusControl}>
                                 <label>
@@ -266,7 +266,7 @@ const Checkout: React.FC = () => {
 
                     <Button
                         type="submit"
-                        variant="secondary"
+                        variant="warm"
                         fullWidth
                         disabled={isProcessing}
                         className={styles.checkout__submit}

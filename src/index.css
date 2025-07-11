@@ -13,6 +13,10 @@ textarea {
     font-family: 'NunitoSans', Arial, sans-serif !important;
 }
 
+input {
+    margin: 0;
+}
+
 .MuiTypography-root,
 .MuiButton-root,
 .MuiInputBase-root {

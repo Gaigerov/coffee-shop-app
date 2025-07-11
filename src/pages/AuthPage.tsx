@@ -25,7 +25,6 @@ const AuthPage: React.FC = () => {
                 await dispatch(signInUser({email, password})).unwrap();
                 navigate('/account');
             } else {
-                // Используем экспортированный тип
                 const result: SignUpResult = await dispatch(signUpUser({email, password})).unwrap();
 
                 if (result.needsConfirmation) {
