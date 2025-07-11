@@ -93,7 +93,7 @@ const Cart: React.FC = () => {
                                     </div>
 
                                     <Button
-                                        variant="secondary"
+                                        variant="warm"
                                         onClick={() => handleRemoveItem(item.id)}
                                         className={styles.cart__removeButton}
                                     >
@@ -118,7 +118,7 @@ const Cart: React.FC = () => {
 
                         <div className={styles.cart__actions}>
                             <Button
-                                variant="secondary"
+                                variant="warm"
                                 onClick={() => dispatch(clearCart())}
                             >
                                 Очистить корзину

@@ -12,11 +12,11 @@
     justify-content: center;
 
     &--primary {
-        background-color: #922B21;
+        background-color: #922b21;
         color: white;
 
         &:hover:not(:disabled) {
-            background-color: #C0392B;
+            background-color: #c0392b;
         }
     }
 
@@ -26,6 +26,15 @@
 
         &:hover:not(:disabled) {
             background-color: #fed0ca;
+        }
+    }
+
+    &--warm {
+        background-color: #FFA726;
+        color: #212121;
+
+        &:hover:not(:disabled) {
+            background-color: #F57C00;
         }
     }
 

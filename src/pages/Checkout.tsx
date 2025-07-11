@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useAppSelector, useAppDispatch} from '../store';
 import {clearCart} from '../features/cart/cartSlice';
 import Button from '../components/ui/Button';
@@ -19,6 +19,8 @@ const Checkout: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [bonusPointsUsed, setBonusPointsUsed] = useState(0);
     const [userBonusPoints, setUserBonusPoints] = useState(0);
+    const [isInputFocused, setIsInputFocused] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const finalTotal = Math.max(0, total - bonusPointsUsed);
@@ -133,8 +135,25 @@ const Checkout: React.FC = () => {
     };
 
     const handleBonusPointsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const points = Math.min(userBonusPoints, Math.max(0, parseInt(e.target.value) || 0));
-        setBonusPointsUsed(Math.min(points, total));
+        const value = e.target.value;
+        if (!/^\d*$/.test(value)) return;
+        const points = value === '' ? 0 : parseInt(value);
+        const maxPoints = Math.min(userBonusPoints, total);
+        setBonusPointsUsed(Math.min(points, maxPoints));
+    };
+
+    const handleFocus = () => {
+        setIsInputFocused(true);
+        if (bonusPointsUsed === 0 && inputRef.current) {
+            inputRef.current.value = '';
+        }
+    };
+
+    const handleBlur = () => {
+        setIsInputFocused(false);
+        if (inputRef.current && inputRef.current.value === '') {
+            setBonusPointsUsed(0);
+        }
     };
 
     if (items.length === 0) {
@@ -188,11 +207,14 @@ const Checkout: React.FC = () => {
                                 <label>
                                     Использовать баллы (доступно: {userBonusPoints})
                                     <input
+                                        ref={inputRef}
                                         type="number"
                                         min="0"
                                         max={Math.min(userBonusPoints, total)}
-                                        value={bonusPointsUsed}
+                                        value={isInputFocused && bonusPointsUsed === 0 ? '' : bonusPointsUsed}
                                         onChange={handleBonusPointsChange}
+                                        onFocus={handleFocus}
+                                        onBlur={handleBlur}
                                         className={styles.checkout__bonusInput}
                                     />
                                 </label>

@@ -126,7 +126,7 @@ const Account: React.FC = () => {
 
             <div className={styles.account__actions}>
                 <Button
-                    variant="secondary"
+                    variant="warm"
                     onClick={handleLogout}
                     className={styles.account__logout}
                 >

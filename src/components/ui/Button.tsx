@@ -3,7 +3,7 @@ import styles from './Button.module.scss';
 
 interface ButtonProps {
     children: React.ReactNode;
-    variant?: 'primary' | 'secondary' | 'outlined';
+    variant?: 'primary' | 'secondary' | 'outlined' | 'warm';
     fullWidth?: boolean;
     onClick?: () => void;
     type?: 'button' | 'submit' | 'reset';
