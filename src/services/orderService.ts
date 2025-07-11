@@ -12,7 +12,7 @@ export interface Order {
     user_id: string;
     items: OrderItem[];
     total: number;
-    bonus_points_used: number; // Изменено с ? на обязательное
+    bonus_points_used: number;
     status: 'pending' | 'completed' | 'cancelled';
     created_at: string;
 }

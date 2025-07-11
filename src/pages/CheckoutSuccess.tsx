@@ -14,7 +14,7 @@ const CheckoutSuccess: React.FC = () => {
     const navigate = useNavigate();
     const {user} = useAppSelector((state) => state.auth);
     const orderId = localStorage.getItem('last_order_id');
-    const [orderDetails, setOrderDetails] = useState<Order | null>(null); // Типизация
+    const [orderDetails, setOrderDetails] = useState<Order | null>(null); 
     const [bonusPoints, setBonusPoints] = useState(0);
 
     useEffect(() => {

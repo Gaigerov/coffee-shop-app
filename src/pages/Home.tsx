@@ -49,7 +49,7 @@ const Home: React.FC = () => {
                     Эксклюзивная смесь из Эфиопии и Колумбии
                 </Typography>
                 <Link to="/menu">
-                    <Button variant="outlined">Заказать сейчас</Button>
+                    <Button variant="primary">Заказать сейчас</Button>
                 </Link>
             </section>
         </div>

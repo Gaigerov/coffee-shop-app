@@ -1,7 +1,15 @@
 @font-face {
-  font-family: 'lavash';
-  src: url('./assets/fonts/lavash.ttf') format('truetype');
+  font-family: 'NunitoSans';
+  src: url('./assets/fonts/nunitosans/NunitoSans') format('truetype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NunitoSansItalic';
+  src: url('./assets/fonts/nunitosans/NunitoSans-Italic') format('truetype');
+  font-weight: 400;
+  font-style: italic;
   font-display: swap;
 }

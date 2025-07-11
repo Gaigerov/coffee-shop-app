@@ -29,19 +29,16 @@ const Checkout: React.FC = () => {
             return;
         }
 
-        // Получение бонусных баллов пользователя
         const fetchUserBonusPoints = async () => {
             try {
-                // Сначала пытаемся получить профиль
                 const {data: profile, error} = await supabase
                     .from('profiles')
                     .select('bonus_points')
                     .eq('id', user.id)
-                    .maybeSingle(); // Используем maybeSingle для обработки отсутствия данных
+                    .maybeSingle();
 
                 if (error) throw error;
 
-                // Если профиля нет - создаем его
                 if (!profile) {
                     const {error: createError} = await supabase
                         .from('profiles')
@@ -73,7 +70,6 @@ const Checkout: React.FC = () => {
         try {
             if (!user) throw new Error('Пользователь не авторизован');
 
-            // Подготовка данных для заказа
             const orderItems = items.map(item => ({
                 product_id: item.id,
                 name: item.name,
@@ -81,23 +77,19 @@ const Checkout: React.FC = () => {
                 quantity: item.quantity,
             }));
 
-            // Оплата через Stripe
             if (paymentMethod === 'card') {
-                // Создаем заказ в базе со статусом "pending"
                 const order = await OrderService.createOrder(
                     user.id,
                     orderItems,
                     finalTotal,
-                    bonusPointsUsed, // Параметр bonus_points_used
+                    bonusPointsUsed,
                 );
 
-                // Сохраняем ID заказа
                 localStorage.setItem('last_order_id', order.id);
 
                 const successUrl = `${window.location.origin}/#/checkout/success`;
                 const cancelUrl = `${window.location.origin}/#/checkout`;
 
-                // Перенаправление на страницу оплаты Stripe
                 await StripeService.createCheckoutSession(
                     items.map(item => ({
                         id: item.id,
@@ -109,9 +101,9 @@ const Checkout: React.FC = () => {
                     cancelUrl
                 );
             }
-            // Оплата наличными
+
             else if (paymentMethod === 'cash') {
-                // Создаем заказ в базе со статусом "completed"
+
                 const order = await OrderService.createOrder(
                     user.id,
                     orderItems,
@@ -120,7 +112,6 @@ const Checkout: React.FC = () => {
                     'completed'
                 );
 
-                // Обновляем бонусные баллы
                 const bonusPointsEarned = Math.floor(finalTotal / 100) * 10;
                 const newBonusPoints = userBonusPoints - bonusPointsUsed + bonusPointsEarned;
 
@@ -129,10 +120,8 @@ const Checkout: React.FC = () => {
                     .update({bonus_points: newBonusPoints})
                     .eq('id', user.id);
 
-                // Сохраняем ID заказа
                 localStorage.setItem('last_order_id', order.id);
 
-                // Очищаем корзину и переходим на страницу успеха
                 dispatch(clearCart());
                 navigate('/checkout/success');
             }

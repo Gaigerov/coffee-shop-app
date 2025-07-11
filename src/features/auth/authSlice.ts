@@ -89,7 +89,6 @@ export const signUpUser = createAsyncThunk(
             if (error) throw error;
 
             if (user) {
-                // Создаем профиль пользователя
                 await AuthService.createProfile(user.id, {
                     email,
                     bonus_points: 0

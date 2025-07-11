@@ -25,7 +25,6 @@ export const AuthService = {
             }
         });
 
-        // Проверка, требуется ли подтверждение email
         const needsConfirmation = data.user?.confirmation_sent_at && !data.user?.email_confirmed_at;
 
         return {
