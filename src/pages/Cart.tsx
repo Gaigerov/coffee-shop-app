@@ -45,7 +45,7 @@ const Cart: React.FC = () => {
                 <div className={styles.cart__empty}>
                     <p>Ваша корзина пуста</p>
                     <Button
-                        variant="outlined"
+                        variant="primary"
                         onClick={() => navigate('/menu')}
                     >
                         Перейти в меню

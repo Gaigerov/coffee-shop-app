@@ -1,29 +1,31 @@
 import {ProductsList} from '../features/products/ProductsList';
-import {useAppDispatch} from '../store';
-import {addItem} from '../features/cart/cartSlice';
 import Typography from '@mui/material/Typography';
-import type {Product} from '../types/types';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 
 const Menu = () => {
-    const dispatch = useAppDispatch();
-
-    const handleAddToCart = (product: Product) => {
-        dispatch(addItem({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            quantity: 1,
-            imageUrl: product.image_url
-        }));
-    };
-
     return (
-        <div>
-            <Typography variant="h4" component="h1" sx={{textAlign: 'center', py: 4}}>
-                Меню кофейни
-            </Typography>
-            <ProductsList onAddToCart={handleAddToCart} />
-        </div>
+        <Box sx={{
+            minHeight: '100vh',
+            backgroundColor: 'white',
+            pb: 8
+        }}>
+            <Container>
+                <Typography
+                    variant="h3"
+                    component="h1"
+                    color="deepBlack"
+                    sx={{
+                        textAlign: 'center',
+                        py: 8,
+                        fontWeight: 700,
+                    }}
+                >
+                    Меню кофейни
+                </Typography>
+                <ProductsList />
+            </Container>
+        </Box>
     );
 };
 

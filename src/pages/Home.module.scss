@@ -1,9 +1,8 @@
 .home {
-  width: 100%;
+    width: 100%;
 }
 
 .home__hero {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), url('https://source.unsplash.com/random/1920x1080/?coffee,shop'));
   background-size: cover;
   background-position: center;
   height: 80vh;
@@ -13,72 +12,86 @@
   text-align: center;
   color: white;
   padding: 0 24px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+  }
 }
 
 .home__heroContent {
+  position: relative;
+  z-index: 2;
   max-width: 800px;
 }
 
 .home__title {
-  font-size: 3rem;
-  margin-bottom: 24px;
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
+    font-size: 3rem;
+    margin-bottom: 24px;
+
+    @media (max-width: 768px) {
+        font-size: 2rem;
+    }
 }
 
 .home__subtitle {
-  font-size: 1.5rem;
-  margin-bottom: 32px;
-  
-  @media (max-width: 768px) {
-    font-size: 1.2rem;
-  }
+    font-size: 1.5rem;
+    margin-bottom: 32px;
+
+    @media (max-width: 768px) {
+        font-size: 1.2rem;
+    }
 }
 
 .home__features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
-  padding: 64px 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    padding: 64px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .home__feature {
-  text-align: center;
-  padding: 32px;
-  border-radius: 12px;
-  background-color: #f9f9f9;
-  transition: transform 0.3s;
-  
-  &:hover {
-    transform: translateY(-10px);
-  }
+    text-align: center;
+    padding: 32px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s;
+
+    &:hover {
+        transform: translateY(-10px);
+    }
 }
 
 .home__featureIcon {
-  font-size: 48px;
-  margin-bottom: 24px;
+    font-size: 48px;
+    margin-bottom: 24px;
 }
 
 .home__cta {
-  text-align: center;
-  padding: 80px 24px;
-  background-color: #cb0909;
-  color: white;
-  
-  h2 {
-    font-size: 2.5rem;
-    margin-bottom: 16px;
-  }
-  
-  p {
-    font-size: 1.2rem;
-    margin-bottom: 32px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+    text-align: center;
+    padding: 80px 24px;
+    background-color: #cb0909;
+    color: white;
+
+    h2 {
+        font-size: 2.5rem;
+        margin-bottom: 16px;
+    }
+
+    p {
+        font-size: 1.2rem;
+        margin-bottom: 32px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

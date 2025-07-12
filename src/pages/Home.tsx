@@ -3,18 +3,13 @@ import {Link} from 'react-router-dom';
 import Button from '../components/ui/Button';
 import styles from './Home.module.scss';
 import Typography from '@mui/material/Typography';
+import barista from '../assets/images/barista.webp';
 
 const Home: React.FC = () => {
     return (
         <div className={styles.home}>
-            <section className={styles.home__hero}>
+            <section className={styles.home__hero} style={{backgroundImage: `url(${barista})`}}>
                 <div className={styles.home__heroContent}>
-                    <Typography variant="h1" className={styles.home__title}>
-                        Добро пожаловать в CoffeeBean
-                    </Typography>
-                    <Typography variant="h5" className={styles.home__subtitle}>
-                        Наслаждайтесь лучшим кофе в городе
-                    </Typography>
                     <Link to="/menu">
                         <Button variant="primary" size="large">
                             Посмотреть меню
@@ -22,7 +17,6 @@ const Home: React.FC = () => {
                     </Link>
                 </div>
             </section>
-
             <section className={styles.home__features}>
                 <div className={styles.home__feature}>
                     <div className={styles.home__featureIcon}>☕</div>

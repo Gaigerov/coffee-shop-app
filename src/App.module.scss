@@ -1,4 +1,11 @@
-@import './assets/styles/fonts.css';
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease,
+        opacity 0.3s ease;
+}
+
+html {
+    overflow-y: scroll;
+}
 
 .app {
     display: flex;
@@ -9,4 +16,10 @@
 .main {
     flex: 1;
     padding: 2rem 0;
+}
+
+:focus-visible {
+    outline: 2px solid #c20303;
+    outline-offset: 2px;
+    border-radius: 4px;
 }
